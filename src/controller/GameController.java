@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.List;
 import model.GameModel;
 import model.Player;
 import model.Card;
@@ -25,7 +24,7 @@ public class GameController {
 		view.displayGameStart(playerNames);
 
 		while (!model.isOver()) {
-			// Update game state display
+			// Mise à jour de l'affichage de l'état du jeu
 			String[] attackZoneDTO;
 			if (model.getAttackZone() == null) {
 				attackZoneDTO = new String[] { "" };
@@ -33,13 +32,14 @@ public class GameController {
 				attackZoneDTO = createCardDTO(model.getAttackZone());
 			}
 			view.displayGameState(createPlayerStateDTO(model.getPlayer1()), createPlayerStateDTO(model.getPlayer2()),
-					createCardsDTO(model.getPlayer1().getPopularityZone()),
-					createCardsDTO(model.getPlayer2().getPopularityZone()), attackZoneDTO);
+					createCardsDTO(model.getPlayer1().getPopularityZone(), model.getPlayer1().getPopularityZoneSize()),
+					createCardsDTO(model.getPlayer2().getPopularityZone(), model.getPlayer2().getPopularityZoneSize()),
+					attackZoneDTO);
 
 			Player currentPlayer = model.getCurrentPlayer();
 			view.displayCurrentTurn(currentPlayer.getName());
 
-			// Draw card and display it
+			// Tirage d'une carte et affichage
 			Card drawnCard = model.draw();
 			String[] drawnCardDTO = createCardDTO(drawnCard);
 			switch (drawnCard.getType()) {
@@ -53,16 +53,16 @@ public class GameController {
 				break;
 			}
 
-			// Display hand cards (always 5 cards)
-			for (int i = 0; i < 5; i++) {
-				Card handCard = model.getCurrentPlayer().getHand().get(i);
+			// Affichage des cartes en main (toujours 5 cartes maximum)
+			for (int i = 0; i < currentPlayer.getHandSize(); i++) {
+				Card handCard = currentPlayer.getHandCard(i);
 				String[] handCardDTO = createCardDTO(handCard);
 				switch (handCard.getType()) {
 				case POPULARITY:
-					view.displayHandPopularityCard(handCardDTO, i+1);
+					view.displayHandPopularityCard(handCardDTO, i + 1);
 					break;
 				case ATTACK:
-					view.displayHandAttackCard(handCardDTO, i+1);
+					view.displayHandAttackCard(handCardDTO, i + 1);
 					break;
 				default:
 					break;
@@ -70,7 +70,8 @@ public class GameController {
 			}
 
 			int cardChoice = view.getCardChoice();
-			while (cardChoice < 0 || cardChoice > 5) {
+			// On attend un choix valide (1-indexé)
+			while (cardChoice < 1 || cardChoice > currentPlayer.getHandSize()) {
 				view.displayErrorChoice();
 				cardChoice = view.getCardChoice();
 			}
@@ -83,10 +84,10 @@ public class GameController {
 		view.displayWinner(winner.getName());
 	}
 
-	private String[][] createCardsDTO(List<Card> cards) {
-		String[][] cardsDTO = new String[cards.size()][];
-		for (int i = 0; i < cards.size(); i++) {
-			cardsDTO[i] = createCardDTO(cards.get(i));
+	private String[][] createCardsDTO(Card[] cards, int count) {
+		String[][] cardsDTO = new String[count][];
+		for (int i = 0; i < count; i++) {
+			cardsDTO[i] = createCardDTO(cards[i]);
 		}
 		return cardsDTO;
 	}

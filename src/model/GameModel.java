@@ -7,7 +7,7 @@ public class GameModel {
 	private Player currentPlayer;
 	private Player opponent;
 	private Card attackZone;
-	
+
 	public Player getPlayer1() {
 		return player1;
 	}
@@ -38,23 +38,23 @@ public class GameModel {
 
 	private void initializeHands() {
 		for (int i = 0; i < 4; i++) {
-			player1.getHand().add(draw.drawCard());
-			player2.getHand().add(draw.drawCard());
+			player1.addCardToHand(draw.drawCard());
+			player2.addCardToHand(draw.drawCard());
 		}
 	}
 
 	public Card draw() {
 		Card newCard = draw.drawCard();
-		currentPlayer.getHand().add(newCard);
+		currentPlayer.addCardToHand(newCard);
 		return newCard;
 	}
 
 	public void playCard(int index) {
-		Card playedCard = currentPlayer.getHand().get(index);
+		Card playedCard = currentPlayer.getHandCard(index);
 		playedCard.applyEffect(currentPlayer, opponent);
-		currentPlayer.getHand().remove(index);
+		currentPlayer.removeCardFromHand(index);
 		if (playedCard.getType() == CardType.POPULARITY) {
-			currentPlayer.getPopularityZone().add(playedCard);
+			currentPlayer.addCardToPopularityZone(playedCard);
 			attackZone = null;
 		} else if (playedCard.getType() == CardType.ATTACK) {
 			attackZone = playedCard;
