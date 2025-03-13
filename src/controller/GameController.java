@@ -6,6 +6,7 @@ import model.Card;
 import model.CardType;
 import model.AttackCard;
 import model.PopularityCard;
+import model.ExchangeCard;
 import view.IView;
 
 public class GameController {
@@ -24,64 +25,89 @@ public class GameController {
 		view.displayGameStart(playerNames);
 
 		while (!model.isOver()) {
-			// Mise à jour de l'affichage de l'état du jeu
-			String[] attackZoneDTO;
-			if (model.getAttackZone() == null) {
-				attackZoneDTO = new String[] { "" };
-			} else {
-				attackZoneDTO = createCardDTO(model.getAttackZone());
-			}
-			view.displayGameState(createPlayerStateDTO(model.getPlayer1()), createPlayerStateDTO(model.getPlayer2()),
-					createCardsDTO(model.getPlayer1().getPopularityZone(), model.getPlayer1().getPopularityZoneSize()),
-					createCardsDTO(model.getPlayer2().getPopularityZone(), model.getPlayer2().getPopularityZoneSize()),
-					attackZoneDTO);
+			updateGameState();
 
 			Player currentPlayer = model.getCurrentPlayer();
+			Player opponent = model.getOpponent();
 			view.displayCurrentTurn(currentPlayer.getName());
 
-			// Tirage d'une carte et affichage
 			Card drawnCard = model.draw();
-			String[] drawnCardDTO = createCardDTO(drawnCard);
-			switch (drawnCard.getType()) {
-			case POPULARITY:
-				view.displayDrawnPopularityCard(drawnCardDTO);
-				break;
-			case ATTACK:
-				view.displayDrawnAttackCard(drawnCardDTO);
-				break;
-			default:
-				break;
-			}
+			displayDrawnCard(drawnCard);
+			displayHandCards(currentPlayer);
 
-			// Affichage des cartes en main (toujours 5 cartes maximum)
-			for (int i = 0; i < currentPlayer.getHandSize(); i++) {
-				Card handCard = currentPlayer.getHandCard(i);
-				String[] handCardDTO = createCardDTO(handCard);
-				switch (handCard.getType()) {
-				case POPULARITY:
-					view.displayHandPopularityCard(handCardDTO, i + 1);
-					break;
-				case ATTACK:
-					view.displayHandAttackCard(handCardDTO, i + 1);
-					break;
-				default:
-					break;
-				}
-			}
+			int cardChoice = getValidChoice(currentPlayer);
+			Card playedCard = currentPlayer.getHandCard(cardChoice - 1);
 
-			int cardChoice = view.getCardChoice();
-			// On attend un choix valide (1-indexé)
-			while (cardChoice < 1 || cardChoice > currentPlayer.getHandSize()) {
-				view.displayErrorChoice();
-				cardChoice = view.getCardChoice();
+			if (playedCard instanceof ExchangeCard exchangeCard) {
+				int exchangeChoice = getValidExchangeChoice(currentPlayer);
+				String[] exchangedNames = exchangeCard.executeSpecialEffect(currentPlayer, opponent, exchangeChoice - 1,
+						model.getDraw());
+				view.displayExchangeResult(exchangedNames[0], exchangedNames[1]);
 			}
-
+			if (playedCard.getType() != CardType.SPECIAL) {
+				view.displayPlayedCard(createCardDTO(playedCard));
+			}
 			model.playCard(cardChoice - 1);
 			model.switchPlayer();
 		}
+		view.displayWinner(model.getWinner().getName());
+	}
 
-		Player winner = model.getWinner();
-		view.displayWinner(winner.getName());
+	private void updateGameState() {
+		String[] attackZoneDTO;
+		if (model.getAttackZone() == null) {
+			attackZoneDTO = new String[] { "" };
+		} else {
+			attackZoneDTO = createCardDTO(model.getAttackZone());
+		}
+		view.displayGameState(createPlayerStateDTO(model.getPlayer1()), createPlayerStateDTO(model.getPlayer2()),
+				createCardsDTO(model.getPlayer1().getPopularityZone(), model.getPlayer1().getPopularityZoneSize()),
+				createCardsDTO(model.getPlayer2().getPopularityZone(), model.getPlayer2().getPopularityZoneSize()),
+				attackZoneDTO);
+	}
+
+	private void displayDrawnCard(Card card) {
+		String[] cardDTO = createCardDTO(card);
+		if (card.getType() == CardType.POPULARITY) {
+			view.displayDrawnPopularityCard(cardDTO);
+		} else if (card.getType() == CardType.ATTACK) {
+			view.displayDrawnAttackCard(cardDTO);
+		} else if (card.getType() == CardType.SPECIAL) {
+			view.displayDrawnSpecialCard(cardDTO);
+		}
+	}
+
+	private void displayHandCards(Player player) {
+		for (int i = 0; i < player.getHandSize(); i++) {
+			Card card = player.getHandCard(i);
+			String[] cardDTO = createCardDTO(card);
+			if (card.getType() == CardType.POPULARITY) {
+				view.displayHandPopularityCard(cardDTO, i + 1);
+			} else if (card.getType() == CardType.ATTACK) {
+				view.displayHandAttackCard(cardDTO, i + 1);
+			} else if (card.getType() == CardType.SPECIAL) {
+				view.displayHandSpecialCard(cardDTO, i + 1);
+			}
+		}
+	}
+
+	private int getValidChoice(Player player) {
+		int choice = view.getCardChoice();
+		while (choice < 1 || choice > player.getHandSize()) {
+			view.displayErrorChoice();
+			choice = view.getCardChoice();
+		}
+		return choice;
+	}
+
+	private int getValidExchangeChoice(Player player) {
+		int choice = view.getExchangeChoice();
+		while (choice < 1 || choice > player.getHandSize()
+				|| (player.getHandCard(choice - 1) instanceof ExchangeCard)) {
+			view.displayErrorChoice();
+			choice = view.getExchangeChoice();
+		}
+		return choice;
 	}
 
 	private String[][] createCardsDTO(Card[] cards, int count) {

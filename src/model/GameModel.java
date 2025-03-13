@@ -15,6 +15,10 @@ public class GameModel {
 	public Player getPlayer2() {
 		return player2;
 	}
+	
+	public Draw getDraw() {
+		return draw;
+	}
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;

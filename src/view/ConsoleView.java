@@ -45,6 +45,7 @@ public class ConsoleView implements IView {
 	@Override
 	public void displayGameState(String[] player1State, String[] player2State, String[][] player1PopularityZone,
 			String[][] player2PopularityZone, String[] attackZone) {
+		System.out.println("");
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
 				║                          ÉTAT ACTUEL DU JEU                          ║
@@ -113,6 +114,13 @@ public class ConsoleView implements IView {
 		System.out.printf("│ > Dégâts : %-2svie                                                     │%n", card[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 	}
+	
+	@Override
+	public void displayDrawnSpecialCard(String[] card) {
+	    System.out.println("┌─── Carte speciale piochée ───────────────────────────────────────────┐");
+	    System.out.printf("│ Nom : %-40s                       │%n", card[0]);
+	    System.out.println("└──────────────────────────────────────────────────────────────────────┘");
+	}
 
 	@Override
 	public void displayHandPopularityCard(String[] card, int index) {
@@ -127,22 +135,46 @@ public class ConsoleView implements IView {
 	public void displayHandAttackCard(String[] card, int index) {
 		System.out.printf("[%d] [Atk] %-25s -  Dégâts : -%s Vie%n", index, card[0], card[2]);
 	}
+	
+	@Override
+	public void displayHandSpecialCard(String[] card, int index) {
+	    System.out.printf("[%d] [Spc] %-25s -  %s%n", index, card[0], card[1]);
+	}
 
 	@Override
 	public int getCardChoice() {
-		System.out.printf("%nChoisissez une carte (1-5) : ");
+		System.out.printf("%nChoisissez une carte à jouer (1-5) : ");
 		try {
 			return Integer.parseInt(scanner.nextLine().trim());
 		} catch (NumberFormatException e) {
 			return -1;
 		}
 	}
+	
+	@Override
+	public int getExchangeChoice() {
+		System.out.printf("%nChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : ");
+		try {
+			return Integer.parseInt(scanner.nextLine().trim());
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
+	
+    @Override
+    public void displayPlayedCard(String[] card) {
+        System.out.printf("%n>>> %s%n", card[1]);
+    }
+    
+    public void displayExchangeResult(String cardOut, String cardIn) {
+        System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
+    }
 
 	@Override
 	public void displayErrorChoice() {
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
-				║                  CHOIX INVALIDE. RÉESSAYEZ (1 à 5)!                  ║
+				║                  CHOIX INVALIDE. RÉESSAYEZ !                         ║
 				╚══════════════════════════════════════════════════════════════════════╝""");
 	}
 
