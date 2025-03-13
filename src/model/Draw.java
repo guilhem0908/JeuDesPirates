@@ -28,7 +28,7 @@ public class Draw {
 					"Vous reperez votre adversaire sans vous faire repere, et gagnez 1 de popularite.", 1, 0);
 		}
 		cards[idx++] = new AttackCard("Coup de Yaskawa",
-				"Inflige 3 degats a l'adversaire a l'aide de son bras robotique industriel a haute precision.", 2);
+				"Inflige 3 degats a l'adversaire a l'aide de son bras robotique industriel a haute precision.", 3);
 		for (int i = 0; i < 10; i++) {
 			cards[idx++] = new AttackCard("Coup de Kuka",
 					"Inflige 1 degat a l'adversaire avec son bras robotique obsolete.", 1);

@@ -9,7 +9,7 @@ public class ConsoleView implements IView {
 	public void displayWelcome() {
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
-				║              BIENVENUE DANS LE TERRIBLE JEU DES PIRATES              ║
+				║              \033[1mBIENVENUE DANS LE TERRIBLE JEU DES PIRATES\033[0m              ║
 				╠══════════════════════════════════════════════════════════════════════╣
 				║                          ~ RÈGLES DU JEU ~                           ║
 				║                                                                      ║
@@ -51,9 +51,9 @@ public class ConsoleView implements IView {
 				║                          ÉTAT ACTUEL DU JEU                          ║
 				╚══════════════════════════════════════════════════════════════════════╝""");
 		System.out.println("┌─── Informations Joueurs ─────────────────────────────────────────────┐");
-		System.out.printf("│ Joueur 1 : %-20s | Vie : %-3s | Popularité : %-3s       │%n", player1State[0],
+		System.out.printf("│ Joueur 1 : %-20s | Vie : \033[31m%-3s\033[0m | Popularité : \033[32m%-1s\033[0m / 5     │%n", player1State[0],
 				player1State[1], player1State[2]);
-		System.out.printf("│ Joueur 2 : %-20s | Vie : %-3s | Popularité : %-3s       │%n", player2State[0],
+		System.out.printf("│ Joueur 2 : %-20s | Vie : \033[31m%-3s\033[0m | Popularité : \033[32m%-1s\033[0m / 5     │%n", player2State[0],
 				player2State[1], player2State[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 		System.out.println();
