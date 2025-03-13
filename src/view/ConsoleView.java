@@ -7,6 +7,7 @@ public class ConsoleView implements IView {
 
 	@Override
 	public void displayWelcome() {
+		System.out.print("\033[0m");
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
 				║              \033[1mBIENVENUE DANS LE TERRIBLE JEU DES PIRATES\033[0m              ║
@@ -27,8 +28,9 @@ public class ConsoleView implements IView {
 	public String[] getPlayerNames() {
 		String[] playerNames = new String[2];
 		for (int i = 0; i < 2; i++) {
-			System.out.print("\nEntrez le nom du joueur " + (i + 1) + " ➤ ");
+			System.out.print("\nEntrez le nom du joueur " + (i + 1) + " ➤\033[32m ");
 			playerNames[i] = scanner.nextLine().trim();
+			System.out.print("\033[0m");
 		}
 		System.out.println("");
 		return playerNames;
@@ -143,7 +145,7 @@ public class ConsoleView implements IView {
 
 	@Override
 	public int getCardChoice() {
-		System.out.printf("%nChoisissez une carte à jouer (1-5) : ");
+		System.out.printf("%nChoisissez une carte à jouer (1-5) : \033[32m");
 		try {
 			return Integer.parseInt(scanner.nextLine().trim());
 		} catch (NumberFormatException e) {
@@ -153,7 +155,7 @@ public class ConsoleView implements IView {
 	
 	@Override
 	public int getExchangeChoice() {
-		System.out.printf("%nChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : ");
+		System.out.printf("%n\033[0mChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : \033[32m");
 		try {
 			return Integer.parseInt(scanner.nextLine().trim());
 		} catch (NumberFormatException e) {
@@ -163,15 +165,18 @@ public class ConsoleView implements IView {
 	
     @Override
     public void displayPlayedCard(String[] card) {
+    	System.out.print("\033[0m");
         System.out.printf("%n>>> %s%n", card[1]);
     }
     
     public void displayExchangeResult(String cardOut, String cardIn) {
+    	System.out.print("\033[0m");
         System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
     }
 
 	@Override
 	public void displayErrorChoice() {
+		System.out.print("\033[0m");
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
 				║                  CHOIX INVALIDE. RÉESSAYEZ !                         ║
