@@ -54,14 +54,15 @@ public class GameModel {
 	}
 
 	public void playCard(int index) {
-		Card playedCard = currentPlayer.getHandCard(index);
+		Card playedCard = currentPlayer.removeCardFromHand(index);
 		playedCard.applyEffect(currentPlayer, opponent);
-		currentPlayer.removeCardFromHand(index);
 		if (playedCard.getType() == CardType.POPULARITY) {
 			currentPlayer.addCardToPopularityZone(playedCard);
-			attackZone = null;
 		} else if (playedCard.getType() == CardType.ATTACK) {
 			attackZone = playedCard;
+		}
+		if (playedCard.getType() != CardType.ATTACK) {
+			attackZone = null;
 		}
 	}
 
