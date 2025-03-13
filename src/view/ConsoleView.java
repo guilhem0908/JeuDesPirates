@@ -7,10 +7,9 @@ public class ConsoleView implements IView {
 
 	@Override
 	public void displayWelcome() {
-		System.out.print("\033[0m");
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
-				║              \033[1mBIENVENUE DANS LE TERRIBLE JEU DES PIRATES\033[0m              ║
+				║              BIENVENUE DANS LE TERRIBLE JEU DES PIRATES              ║
 				╠══════════════════════════════════════════════════════════════════════╣
 				║                          ~ RÈGLES DU JEU ~                           ║
 				║                                                                      ║
@@ -28,9 +27,8 @@ public class ConsoleView implements IView {
 	public String[] getPlayerNames() {
 		String[] playerNames = new String[2];
 		for (int i = 0; i < 2; i++) {
-			System.out.print("\nEntrez le nom du joueur " + (i + 1) + " ➤\033[32m ");
+			System.out.print("\nEntrez le nom du joueur " + (i + 1) + " ➤ ");
 			playerNames[i] = scanner.nextLine().trim();
-			System.out.print("\033[0m");
 		}
 		System.out.println("");
 		return playerNames;
@@ -53,9 +51,9 @@ public class ConsoleView implements IView {
 				║                          ÉTAT ACTUEL DU JEU                          ║
 				╚══════════════════════════════════════════════════════════════════════╝""");
 		System.out.println("┌─── Informations Joueurs ─────────────────────────────────────────────┐");
-		System.out.printf("│ Joueur 1 : %-20s | Vie : \033[31m%-3s\033[0m | Popularité : \033[32m%-1s\033[0m / 5     │%n", player1State[0],
+		System.out.printf("│ Joueur 1 : %-20s | Vie : %-3s | Popularité : %-1s / 5     │%n", player1State[0],
 				player1State[1], player1State[2]);
-		System.out.printf("│ Joueur 2 : %-20s | Vie : \033[31m%-3s\033[0m | Popularité : \033[32m%-1s\033[0m / 5     │%n", player2State[0],
+		System.out.printf("│ Joueur 2 : %-20s | Vie : %-3s | Popularité : %-1s / 5     │%n", player2State[0],
 				player2State[1], player2State[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 		System.out.println();
@@ -145,7 +143,7 @@ public class ConsoleView implements IView {
 
 	@Override
 	public int getCardChoice() {
-		System.out.printf("%nChoisissez une carte à jouer (1-5) : \033[32m");
+		System.out.printf("%nChoisissez une carte à jouer (1-5) : ");
 		try {
 			return Integer.parseInt(scanner.nextLine().trim());
 		} catch (NumberFormatException e) {
@@ -155,7 +153,7 @@ public class ConsoleView implements IView {
 	
 	@Override
 	public int getExchangeChoice() {
-		System.out.printf("%n\033[0mChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : \033[32m");
+		System.out.printf("%nChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : ");
 		try {
 			return Integer.parseInt(scanner.nextLine().trim());
 		} catch (NumberFormatException e) {
@@ -165,18 +163,15 @@ public class ConsoleView implements IView {
 	
     @Override
     public void displayPlayedCard(String[] card) {
-    	System.out.print("\033[0m");
         System.out.printf("%n>>> %s%n", card[1]);
     }
     
     public void displayExchangeResult(String cardOut, String cardIn) {
-    	System.out.print("\033[0m");
         System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
     }
 
 	@Override
 	public void displayErrorChoice() {
-		System.out.print("\033[0m");
 		System.out.println("""
 				╔══════════════════════════════════════════════════════════════════════╗
 				║                  CHOIX INVALIDE. RÉESSAYEZ !                         ║
