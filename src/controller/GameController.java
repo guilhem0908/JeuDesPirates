@@ -43,6 +43,11 @@ public class GameController {
 				String[] exchangedNames = exchangeCard.executeSpecialEffect(currentPlayer, opponent, exchangeChoice - 1,
 						model.getDraw());
 				view.displayExchangeResult(exchangedNames[0], exchangedNames[1]);
+				// Si la carte à échanger précède la carte d'échange, décaler l'indice de 1 (la
+				// nouvelle carte étant ajoutée en fin).
+				if (exchangeChoice < cardChoice) {
+					cardChoice -= 1;
+				}
 			}
 			if (playedCard.getType() != CardType.SPECIAL) {
 				view.displayPlayedCard(createCardDTO(playedCard));
@@ -126,6 +131,9 @@ public class GameController {
 			PopularityCard pCard = (PopularityCard) card;
 			cardDTO[2] = String.valueOf(pCard.getHpCost());
 			cardDTO[3] = String.valueOf(pCard.getPopularityPoints());
+			if (cardDTO[3].length() == 1) {
+				cardDTO[3] = "+" + cardDTO[3];
+			}
 		} else if (card.getType() == CardType.ATTACK) {
 			AttackCard aCard = (AttackCard) card;
 			cardDTO[2] = String.valueOf(aCard.getDamage());

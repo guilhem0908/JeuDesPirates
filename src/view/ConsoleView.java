@@ -102,7 +102,7 @@ public class ConsoleView implements IView {
 	public void displayDrawnPopularityCard(String[] card) {
 		System.out.println("┌─── Carte de popularité piochée ──────────────────────────────────────┐");
 		System.out.printf("│ Nom : %-40s                       │%n", card[0]);
-		System.out.printf("│ > Popularité : +%-2s             > Coût : -%-2s Vie                      │%n", card[3],
+		System.out.printf("│ > Popularité : %-2s             > Coût : -%-2s Vie                       │%n", card[3],
 				card[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 	}
@@ -114,20 +114,21 @@ public class ConsoleView implements IView {
 		System.out.printf("│ > Dégâts : %-2svie                                                     │%n", card[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 	}
-	
+
 	@Override
 	public void displayDrawnSpecialCard(String[] card) {
-	    System.out.println("┌─── Carte speciale piochée ───────────────────────────────────────────┐");
-	    System.out.printf("│ Nom : %-40s                       │%n", card[0]);
-	    System.out.println("└──────────────────────────────────────────────────────────────────────┘");
+		System.out.println("┌─── Carte speciale piochée ───────────────────────────────────────────┐");
+		System.out.printf("│ Nom : %-40s                       │%n", card[0]);
+		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 	}
 
 	@Override
 	public void displayHandPopularityCard(String[] card, int index) {
 		if (!card[2].equals("0")) {
-			System.out.printf("[%d] [Pop] %-25s -  Popularité : +%s | Coût : -%s Vie%n", index, card[0], card[3], card[2]);
+			System.out.printf("[%d] [Pop] %-25s -  Popularité : %-2s | Coût : -%s Vie%n", index, card[0], card[3],
+					card[2]);
 		} else {
-			System.out.printf("[%d] [Pop] %-25s -  Popularité : +%s%n", index, card[0], card[3]);
+			System.out.printf("[%d] [Pop] %-25s -  Popularité : %s%n", index, card[0], card[3]);
 		}
 	}
 
@@ -135,10 +136,10 @@ public class ConsoleView implements IView {
 	public void displayHandAttackCard(String[] card, int index) {
 		System.out.printf("[%d] [Atk] %-25s -  Dégâts : -%s Vie%n", index, card[0], card[2]);
 	}
-	
+
 	@Override
 	public void displayHandSpecialCard(String[] card, int index) {
-	    System.out.printf("[%d] [Spc] %-25s -  %s%n", index, card[0], card[1]);
+		System.out.printf("[%d] [Spc] %-25s -  %s%n", index, card[0], card[1]);
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class ConsoleView implements IView {
 			return -1;
 		}
 	}
-	
+
 	@Override
 	public int getExchangeChoice() {
 		System.out.printf("%nChoisissez une carte à échanger (1-5, hors Echange Furtif au RU) : ");
@@ -160,15 +161,15 @@ public class ConsoleView implements IView {
 			return -1;
 		}
 	}
-	
-    @Override
-    public void displayPlayedCard(String[] card) {
-        System.out.printf("%n>>> %s%n", card[1]);
-    }
-    
-    public void displayExchangeResult(String cardOut, String cardIn) {
-        System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
-    }
+
+	@Override
+	public void displayPlayedCard(String[] card) {
+		System.out.printf("%n>>> %s%n", card[1]);
+	}
+
+	public void displayExchangeResult(String cardOut, String cardIn) {
+		System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
+	}
 
 	@Override
 	public void displayErrorChoice() {
