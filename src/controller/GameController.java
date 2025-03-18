@@ -7,6 +7,7 @@ import model.CardType;
 import model.AttackCard;
 import model.PopularityCard;
 import model.ExchangeCard;
+import model.ZeroCard;
 import view.IView;
 
 public class GameController {
@@ -48,6 +49,10 @@ public class GameController {
 				if (exchangeChoice < cardChoice) {
 					cardChoice -= 1;
 				}
+			}
+			if (playedCard instanceof ZeroCard zeroCard) {
+				int damage = zeroCard.executeSpecialEffect(currentPlayer, opponent);
+				view.displayZeroResult(damage);
 			}
 			if (playedCard.getType() != CardType.SPECIAL) {
 				view.displayPlayedCard(createCardDTO(playedCard));

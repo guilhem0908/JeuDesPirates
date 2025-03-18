@@ -3,7 +3,7 @@ package model;
 import java.util.Random;
 
 public class Draw {
-	private Card[] cards = new Card[46];
+	private Card[] cards = new Card[49];
 	private int cardIndex = 0;
 	private Random random = new Random();
 
@@ -15,9 +15,9 @@ public class Draw {
 		initializeDraw();
 	}
 
-	// On initialise le deck avec 34 cartes et on le mélange
+	// On initialise le deck avec 47 cartes et on le mélange
 	private void initializeDraw() {
-		cards = new Card[46];
+		cards = new Card[49];
 		int idx = 0;
 		cards[idx++] = new PopularityCard("IntelliJ",
 				"Vous utilisez le bateau IntelliJ et naviguez sur des eaux agitees, perdez 3 de popularite.", -3, 0);
@@ -38,7 +38,9 @@ public class Draw {
 		for (int i = 0; i < 3; i++) {
 			cards[idx++] = new ExchangeCard("Echange Furtif au RU",
 					"Échangez une carte contre une aléatoire adverse, puis piochez.");
+			cards[idx++] = new ZeroCard("Dirac en 0", "Dégâts : 3 si vous avez 0 ou moins de popularité sinon 0.");
 		}
+		
 		// Mélange des cartes avec l'algorithme de Fisher-Yates
 		for (int i = cards.length - 1; i > 0; i--) {
 			int j = random.nextInt(i + 1);

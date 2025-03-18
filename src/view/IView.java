@@ -30,7 +30,9 @@ public interface IView {
     
     void displayPlayedCard(String[] card);
     
-    public void displayExchangeResult(String cardOut, String cardIn);
+    void displayExchangeResult(String cardOut, String cardIn);
+    
+    void displayZeroResult(int damage);
 
     void displayErrorChoice();
 

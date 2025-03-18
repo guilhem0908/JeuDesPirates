@@ -51,9 +51,9 @@ public class ConsoleView implements IView {
 				║                          ÉTAT ACTUEL DU JEU                          ║
 				╚══════════════════════════════════════════════════════════════════════╝""");
 		System.out.println("┌─── Informations Joueurs ─────────────────────────────────────────────┐");
-		System.out.printf("│ Joueur 1 : %-20s | Vie : %-3s | Popularité : %-1s / 5     │%n", player1State[0],
+		System.out.printf("│ Joueur 1 : %-20s | Vie : %-3s | Popularité : %-2s / 5    │%n", player1State[0],
 				player1State[1], player1State[2]);
-		System.out.printf("│ Joueur 2 : %-20s | Vie : %-3s | Popularité : %-1s / 5     │%n", player2State[0],
+		System.out.printf("│ Joueur 2 : %-20s | Vie : %-3s | Popularité : %-2s / 5    │%n", player2State[0],
 				player2State[1], player2State[2]);
 		System.out.println("└──────────────────────────────────────────────────────────────────────┘");
 		System.out.println();
@@ -169,6 +169,10 @@ public class ConsoleView implements IView {
 
 	public void displayExchangeResult(String cardOut, String cardIn) {
 		System.out.printf("%n>>> La carte \"%s\" a été échangée avec \"%s\".%n", cardOut, cardIn);
+	}
+	
+	public void displayZeroResult(int damage) {
+		System.out.printf("%n>>> Le dirac en 0 à infliger %d, quelle force!%n", damage);
 	}
 
 	@Override
